@@ -12,39 +12,39 @@ connectDB();
 // Initialize express app
 const app = express();
 
-// CORS configuration
+const allowedLocalOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5500',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:5500',
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3001'
+];
+
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (null origin - file:// protocol, mobile apps, Postman, etc.)
-    if (!origin || origin === 'null') {
-      return callback(null, true);
-    }
-    
-    // Allow common development origins
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5500',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:5500',
-      'http://localhost:5173', // Vite default
-      'http://localhost:5174', // Vite alternate
-      'http://localhost:3001',
-      'null' // For file:// protocol
-    ];
-    
-    // In development, allow all origins
-    if (process.env.NODE_ENV === 'development' || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    // allow tools with no origin (Postman, file://)
+    if (!origin || origin === 'null') return callback(null, true);
+
+    // allow localhost dev origins
+    if (allowedLocalOrigins.includes(origin)) return callback(null, true);
+
+    // allow Vercel frontend URL passed in env (set exactly, no trailing slash)
+    const FRONTEND_URL = process.env.FRONTEND_URL;
+    if (FRONTEND_URL && origin === FRONTEND_URL) return callback(null, true);
+
+    // fallback: reject
+    return callback(new Error('Not allowed by CORS'));
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
-  optionsSuccessStatus: 200 // For legacy browser support
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // preflight
+
 
 // Body parser middleware
 app.use(express.json());
