@@ -6,13 +6,13 @@ const connectDB = require('./config/db');
 // Load env vars
 dotenv.config();
 // debug: masked MONGO_URI check — remove after debugging
-if (process.env.MONGODB_URI) {
-  const preview = process.env.MONGODB_URI.slice(0, 40) + '...';
+if (process.env.MONGO_URI) {
+  const preview = process.env.MONGO_URI.slice(0, 40) + '...';
   console.log('DEBUG: MONGO_URI present, preview:', preview);
 } else {
   console.log('DEBUG: MONGO_URI is NOT present (undefined)');
 }
-console.log('MONGO_URI present?', !!process.env.MONGODB_URI);
+console.log('MONGO_URI present?', !!process.env.MONGO_URI);
 
 // Connect to database
 connectDB();
