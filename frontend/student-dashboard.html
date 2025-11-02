@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - BrainBuzz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h1>Student Dashboard</h1>
+            <div class="user-info">
+                <span class="user-badge" id="username">Student</span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- Navigation Tabs -->
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="showSection('available')">Available Quizzes</button>
+                    <button class="tab-btn" onclick="showSection('attempts')">My Results</button>
+                </div>
+
+                <!-- Loading indicator -->
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                </div>
+
+                <!-- Available Quizzes Section -->
+                <div id="available-section" class="section">
+                    <h2 class="section-title">Available Quizzes</h2>
+                    <div id="quizzes-list" class="quizzes-grid"></div>
+                    <div id="no-quizzes" style="text-align: center; padding: 40px; color: var(--text-light); display: none;">
+                        No quizzes available at the moment.
+                    </div>
+                </div>
+
+                <!-- Attempts History Section -->
+                <div id="attempts-section" class="section" style="display: none;">
+                    <h2 class="section-title">My Quiz Results</h2>
+                    <div id="attempts-list"></div>
+                    <div id="no-attempts" style="text-align: center; padding: 40px; color: var(--text-light); display: none;">
+                        You haven't attempted any quizzes yet.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="student-dashboard.js"></script>
+</body>
+</html>
