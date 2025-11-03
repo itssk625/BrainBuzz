@@ -27,7 +27,8 @@ const allowedLocalOrigins = [
   'http://localhost:5500',
   'http://localhost:5173',
   'http://localhost:5174',
-  'http://localhost:3001'
+  'http://localhost:3001',
+  'https://brain-buzz-m9zmquw5m-sumairaas-projects.vercel.app/'
 ];
 
 const corsOptions = {
