@@ -72,10 +72,7 @@ app.get('/api/health', (req, res) => {
     message: 'BrainBuzz API is running'
   });
 });
-// --- Auto-detect & serve frontend static files from common folders ---
-// Place this BEFORE your final 404 handler so static files and SPA fallback are served.
-const fs = require('fs');
-const path = require('path');
+
 
 // candidate folders to check (common layouts)
 const candidates = [
