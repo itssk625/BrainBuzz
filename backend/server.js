@@ -51,7 +51,12 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200
 };
-app.use(cors(corsOptions));
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://brain-buzz-m9zmquw5m-sumairaas-projects.vercel.app/' ,
+  credentials: true
+}));
+
 app.options('*', cors(corsOptions)); // preflight
 
 
