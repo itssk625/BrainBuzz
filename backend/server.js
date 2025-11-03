@@ -51,13 +51,16 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 200
 };
-const cors = require('cors');
+
 app.use(cors({
-  origin: 'https://brain-buzz-m9zmquw5m-sumairaas-projects.vercel.app/' ,
-  credentials: true
+  origin: [
+    'https://brain-buzz-m9zmquw5m-sumairaas-projects.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173'
+  ],
+  credentials: true,
 }));
 
-app.options('*', cors(corsOptions)); // preflight
 
 
 // Body parser middleware
