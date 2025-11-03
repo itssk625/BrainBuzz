@@ -2,7 +2,8 @@
  * API Configuration
  * Base URL for backend API
  */
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://brainbuzz-backend.onrender.com/api';
+
 
 /**
  * API Service - Handles all API calls

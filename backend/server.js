@@ -2,6 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const fs = require('fs');
+const path = require('path');
 
 // Load env vars
 dotenv.config();
@@ -70,6 +72,52 @@ app.get('/api/health', (req, res) => {
     message: 'BrainBuzz API is running'
   });
 });
+// --- Auto-detect & serve frontend static files from common folders ---
+// Place this BEFORE your final 404 handler so static files and SPA fallback are served.
+const fs = require('fs');
+const path = require('path');
+
+// candidate folders to check (common layouts)
+const candidates = [
+  path.join(__dirname, 'public'),
+  path.join(__dirname, 'client', 'build'),
+  path.join(__dirname, 'frontend'),
+  path.join(__dirname, 'build'), // CRA default when server & build in same dir
+  path.join(__dirname, 'dist')   // Vite default
+];
+
+let servedFrom = null;
+for (const candidate of candidates) {
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+    servedFrom = candidate;
+    break;
+  }
+}
+
+if (servedFrom) {
+  console.log(`Static frontend found — serving from: ${servedFrom}`);
+  app.use(express.static(servedFrom));
+
+  // serve exact files if they exist; otherwise fallback to index.html for SPA routing
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+
+    const maybe = path.join(servedFrom, req.path);
+    if (fs.existsSync(maybe) && fs.statSync(maybe).isFile()) {
+      return res.sendFile(maybe);
+    }
+
+    // fallback to index.html
+    const indexFile = path.join(servedFrom, 'index.html');
+    if (fs.existsSync(indexFile)) return res.sendFile(indexFile);
+    // If no index.html found (unlikely), fallthrough to 404 handler
+    return next();
+  });
+} else {
+  console.log('No static frontend detected in common folders (public, client/build, frontend, build, dist).');
+  console.log('If your frontend is elsewhere, either move it to one of those folders or update server to point to it.');
+}
+
 
 // 404 handler
 app.use((req, res) => {
