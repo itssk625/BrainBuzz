@@ -120,12 +120,20 @@ if (servedFrom) {
 
 
 // 404 handler
+// 404 handler — fix root route
 app.use((req, res) => {
+  if (req.originalUrl === '/' || req.originalUrl === '') {
+    return res.status(200).json({
+      success: true,
+      message: 'BrainBuzz backend is live 🚀'
+    });
+  }
   res.status(404).json({
     success: false,
     message: 'Route not found'
   });
 });
+
 
 // Error handler
 app.use((err, req, res, next) => {
